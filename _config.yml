@@ -1,8 +1,8 @@
 url: ""
 baseurl: "jolana-veneny.github.io"
  # the subpath of your site, e.g. /blog/
-lsi: false
-safe: true
+#lsi: false
+#safe: true
 
 # incremental: false
 #highlighter: rouge
