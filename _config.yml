@@ -1,0 +1,19 @@
+url: ""
+baseurl: "jolana-veneny.github.io"
+ # the subpath of your site, e.g. /blog/
+lsi: false
+safe: true
+
+incremental: false
+highlighter: rouge
+gist:
+  noscript: false
+kramdown:
+  math_engine: mathjax
+  syntax_highlighter: rouge
+
+
+collections:
+  tags:
+    output: true
+

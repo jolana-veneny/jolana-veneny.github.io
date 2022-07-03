@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <title>Automated ctf Solver In Python</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="" />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+    <link rel="icon" href="img/favicon.png">
+    </head>
+
+    <body>
+        <div class="container" >
+    <img src="assets/images/Ghidra.png" class="mx-auto d-block" id="header"/>
+</div>
+
+
+<div class="container">
+    <nav class="navbar navbar-expand-md">
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        </div>
+        <div class="mx-auto order-0">
+            <ul class="navbar-nav mr-auto">
+                
+                <a class="nav-item nav-link" href="/">Home </a>
+                
+                
+                <a class="nav-item nav-link" href="/Projects.html">Projects</a>
+                
+                
+                <a class="nav-item nav-link" href="/writeups.html">WriteUps</a>
+                
+                
+                <a class="nav-item nav-link" href="/notes.html">Notes</a>
+                
+                
+                <a class="nav-item nav-link" href="/about.html">About</a>
+                
+        </ul>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="https://github.com/jolana-veneny"><i class="fab fa-github mr-1"></i></a> </li>
+                <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/jolana-veneny/"><i class="fab fa-linkedin mr-1"></i></a> </li>
+                <li class="nav-item"><a class="nav-link" href="https://twitter.com/lanaveneny"><i class="fab fa-twitter"></i></a> </li>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+            <div class="container post">
+        <div class="row justify-content-between post-header">
+            <div class="col-4">
+                <p class="category">14 Mar 2022 - by JLN</p>
+            </div>
+            <div class="col-2">
+                <p class="category">Category: Projects</p>
+            </div>
+        </div>
+        <h2 id="automated-ctf-solver-in-python">Automated CTF Solver in Python</h2>
+<p>Python program which takes in a configuration file and automatically completes the Bandit Over the Wire CT.</p>
+
+<p>This script completes the first five levels of the Over The Wire’s Bandit game which is located on a remote server accessible via a ssh connection. The script then goes through each level, executing commands to locate a file with the next password which is then supplied to another function reach the next round. The script contains eight functions in total, six for each of the levels and two establishing and closing the ssh connections. The script uses two external modules: paramiko and ConfigParser. Paramiko is used for logging in and communicating with the remote server, and ConfigParser is extracting the login details such as address and usernames from cfg files. There are six cfig files, each with specific login information for each level. These files do not contain any passwords with the exception for level zero. The script generates a txt file called “passwords” where all the passwords, that is six in total, are stored and prove that the program run successfully.</p>
+
+<p><a href="https://github.com/jolana-veneny/Automated-CTF-Solver-in-Python">To view the code and configuration files on Github click here.</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">configparser</span> <span class="kn">import</span> <span class="n">ConfigParser</span>
+<span class="kn">import</span> <span class="nn">paramiko</span>
+
+
+<span class="c1"># creates a login function which takes a cfig file and a password as variables and returns the ssh connection
+</span><span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+    <span class="c1"># extracts section name from file name
+</span>    <span class="n">file_section</span> <span class="o">=</span> <span class="nb">file</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="s">".cfg"</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span>
+    <span class="c1"># parses login details from a file
+</span>    <span class="n">config</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="p">()</span>
+    <span class="n">config</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="nb">file</span><span class="p">)</span>
+
+    <span class="c1"># assigns the details to variables
+</span>    <span class="n">address</span> <span class="o">=</span> <span class="n">config</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_section</span><span class="p">,</span> <span class="s">"address"</span><span class="p">)</span>
+    <span class="n">port</span> <span class="o">=</span> <span class="n">config</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_section</span><span class="p">,</span> <span class="s">"port"</span><span class="p">)</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">config</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_section</span><span class="p">,</span> <span class="s">"username"</span><span class="p">)</span>
+
+    <span class="c1"># establishes a connection to server using the login variables + removes a new line from the password variable
+</span>    <span class="n">ssh</span> <span class="o">=</span> <span class="n">paramiko</span><span class="p">.</span><span class="n">SSHClient</span><span class="p">()</span>
+    <span class="n">ssh</span><span class="p">.</span><span class="n">set_missing_host_key_policy</span><span class="p">(</span><span class="n">paramiko</span><span class="p">.</span><span class="n">AutoAddPolicy</span><span class="p">())</span>
+    <span class="n">ssh</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">ssh</span>
+
+
+<span class="c1"># creates a function which closes the ssh connection
+</span><span class="k">def</span> <span class="nf">close_connection</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">,</span> <span class="n">ssh</span><span class="p">):</span>
+    <span class="n">stdin</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">stdout</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">stderr</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">ssh</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="c1"># creates a function which completes level 0
+</span><span class="k">def</span> <span class="nf">level0</span><span class="p">():</span>
+    <span class="nb">file</span> <span class="o">=</span> <span class="s">"bandit1.cfg"</span>
+    <span class="c1"># loads up level0 password into a variable
+</span>    <span class="n">config</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="p">()</span>
+    <span class="n">config</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="nb">file</span><span class="p">)</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">config</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"bandit1"</span><span class="p">,</span> <span class="s">"password"</span><span class="p">)</span>
+    <span class="c1"># uses the login function with a cfg file and a password as variables
+</span>    <span class="n">ssh</span> <span class="o">=</span> <span class="n">login</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+
+    <span class="c1"># runs the bash commands
+</span>    <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">ssh</span><span class="p">.</span><span class="n">exec_command</span><span class="p">(</span><span class="s">"cat /home/bandit0/readme"</span><span class="p">)</span>
+    <span class="n">password1</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">stdout</span><span class="p">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># closes the ssh connection
+</span>    <span class="n">close_connection</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">,</span> <span class="n">ssh</span><span class="p">)</span>
+
+    <span class="c1"># gets the password, writes to a file, and returns it as a variable
+</span>    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"passwords.txt"</span><span class="p">,</span> <span class="s">"a"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"The password for level 1 is: "</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">password1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">password1</span>
+
+
+<span class="k">def</span> <span class="nf">level1</span><span class="p">(</span><span class="n">password1</span><span class="p">):</span>
+    <span class="nb">file</span> <span class="o">=</span> <span class="s">"bandit2.cfg"</span>
+    <span class="c1"># uses the login function with a cfg file and a password as variables
+</span>    <span class="n">ssh</span> <span class="o">=</span> <span class="n">login</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="n">password1</span><span class="p">)</span>
+
+    <span class="c1"># runs the bash commands
+</span>    <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">ssh</span><span class="p">.</span><span class="n">exec_command</span><span class="p">(</span><span class="s">"cat /home/bandit1/-"</span><span class="p">)</span>
+    <span class="n">password2</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">stdout</span><span class="p">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># closes the ssh connection
+</span>    <span class="n">close_connection</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">,</span> <span class="n">ssh</span><span class="p">)</span>
+
+    <span class="c1"># gets the password, writes to a file, and returns it as a variable
+</span>    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"passwords.txt"</span><span class="p">,</span> <span class="s">"a"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"The password for level 2 is: "</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">password2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">password2</span>
+
+
+<span class="k">def</span> <span class="nf">level2</span><span class="p">(</span><span class="n">password2</span><span class="p">):</span>
+    <span class="nb">file</span> <span class="o">=</span> <span class="s">"bandit3.cfg"</span>
+    <span class="c1"># uses the login function with a cfg file and a password as variables
+</span>    <span class="n">ssh</span> <span class="o">=</span> <span class="n">login</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="n">password2</span><span class="p">)</span>
+
+    <span class="c1"># gets a list of directory contents and reads in the content into a variable
+</span>    <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">ssh</span><span class="p">.</span><span class="n">exec_command</span><span class="p">(</span><span class="s">"ls"</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">stdout</span><span class="p">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># replaces spaces with escape characters in the file name
+</span>    <span class="n">filename</span> <span class="o">=</span> <span class="n">output</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">"\ "</span><span class="p">)</span>
+
+    <span class="c1"># calls the command avoiding the spaces problem in Linux
+</span>    <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">ssh</span><span class="p">.</span><span class="n">exec_command</span><span class="p">(</span><span class="sa">f</span><span class="s">"cat </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="c1"># gets the password, uploads it to a text file, and returns the value from the function
+</span>    <span class="n">password3</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">stdout</span><span class="p">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># closes the ssh connection
+</span>    <span class="n">close_connection</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">,</span> <span class="n">ssh</span><span class="p">)</span>
+
+    <span class="c1"># gets the password, writes to a file, and returns it as a variable
+</span>    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"passwords.txt"</span><span class="p">,</span> <span class="s">"a"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"The password for level 3 is: "</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">password3</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">password3</span>
+
+
+<span class="k">def</span> <span class="nf">level3</span><span class="p">(</span><span class="n">password3</span><span class="p">):</span>
+    <span class="nb">file</span> <span class="o">=</span> <span class="s">"bandit4.cfg"</span>
+    <span class="c1"># uses the login function with a cfg file and a password as variables
+</span>    <span class="n">ssh</span> <span class="o">=</span> <span class="n">login</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="n">password3</span><span class="p">)</span>
+
+    <span class="c1"># changes directory to "inhere" and opens a hidden file ".hidden"
+</span>
+    <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">ssh</span><span class="p">.</span><span class="n">exec_command</span><span class="p">(</span><span class="s">"cd inhere; ls -a"</span><span class="p">)</span>
+    <span class="n">output1</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">stdout</span><span class="p">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">file_name</span> <span class="o">=</span> <span class="n">output1</span><span class="p">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">ssh</span><span class="p">.</span><span class="n">exec_command</span><span class="p">(</span><span class="sa">f</span><span class="s">"cd inhere; cat </span><span class="se">\"</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="se">\"</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">password4</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">stdout</span><span class="p">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># closes the ssh connection
+</span>    <span class="n">close_connection</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">,</span> <span class="n">ssh</span><span class="p">)</span>
+
+    <span class="c1"># gets the password, writes to a file, and returns it as a variable
+</span>    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"passwords.txt"</span><span class="p">,</span> <span class="s">"a"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"The password for level 4 is: "</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">password4</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">password4</span>
+
+
+<span class="k">def</span> <span class="nf">level4</span><span class="p">(</span><span class="n">password4</span><span class="p">):</span>
+    <span class="nb">file</span> <span class="o">=</span> <span class="s">"bandit5.cfg"</span>
+    <span class="c1"># uses the login function with a cfg file and a password as variables
+</span>    <span class="n">ssh</span> <span class="o">=</span> <span class="n">login</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="n">password4</span><span class="p">)</span>
+
+    <span class="c1"># creates a list of all the file in the inhere directory
+</span>    <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">ssh</span><span class="p">.</span><span class="n">exec_command</span><span class="p">(</span><span class="s">"cd inhere; ls"</span><span class="p">)</span>
+    <span class="n">output1</span> <span class="o">=</span> <span class="n">stdout</span><span class="p">.</span><span class="n">readlines</span><span class="p">()</span>
+
+    <span class="c1"># loops over the list of files, trying to open one by one. When a file can be read in utf-8,
+</span>    <span class="c1"># the file is read, the content (the password) is loaded into a variable
+</span>    <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">output1</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">file_clean</span> <span class="o">=</span> <span class="nb">file</span><span class="p">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">ssh</span><span class="p">.</span><span class="n">exec_command</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s">"cd inhere; cat -- </span><span class="si">{</span><span class="n">file_clean</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+            <span class="n">password5</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">stdout</span><span class="p">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">break</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+    <span class="c1"># closes the ssh connection
+</span>    <span class="n">close_connection</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">,</span> <span class="n">ssh</span><span class="p">)</span>
+
+    <span class="c1"># gets the password, writes to a file, and returns it as a variable
+</span>    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"passwords.txt"</span><span class="p">,</span> <span class="s">"a"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"The password for level 5 is: "</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">password5</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">password5</span>
+
+
+<span class="k">def</span> <span class="nf">level5</span><span class="p">(</span><span class="n">password5</span><span class="p">):</span>
+    <span class="nb">file</span> <span class="o">=</span> <span class="s">"bandit6.cfg"</span>
+    <span class="c1"># uses the login function with a cfg file and a password as variables
+</span>    <span class="n">ssh</span> <span class="o">=</span> <span class="n">login</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="n">password5</span><span class="p">)</span>
+
+    <span class="c1"># creates a list of all the file in the inhere directory
+</span>    <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">ssh</span><span class="p">.</span><span class="n">exec_command</span><span class="p">(</span><span class="s">"cd inhere; ls"</span><span class="p">)</span>
+    <span class="n">output1</span> <span class="o">=</span> <span class="n">stdout</span><span class="p">.</span><span class="n">readlines</span><span class="p">()</span>
+
+    <span class="c1"># searches for and cleans a file name and path to a 1033 byte-sized file
+</span>    <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">ssh</span><span class="p">.</span><span class="n">exec_command</span><span class="p">(</span>
+        <span class="s">"cd inhere; find -size 1033c"</span><span class="p">)</span>
+    <span class="n">output2</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">stdout</span><span class="p">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># reads the file's contents, loads the password to a variable
+</span>    <span class="n">output2_cleaned</span> <span class="o">=</span> <span class="n">output2</span><span class="p">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">ssh</span><span class="p">.</span><span class="n">exec_command</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s">"cd inhere; cat </span><span class="si">{</span><span class="n">output2_cleaned</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">password6</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">stdout</span><span class="p">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># closes the ssh connection
+</span>    <span class="n">close_connection</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">,</span> <span class="n">ssh</span><span class="p">)</span>
+
+    <span class="c1"># gets the password, writes to a file, and returns it as a variable
+</span>    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"passwords.txt"</span><span class="p">,</span> <span class="s">"a"</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"The password for level 6 is: "</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">password6</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">password6</span>
+
+
+<span class="c1"># calls level functions + takes their return values, assigns them to variables, 
+# and passes them into the folllowing function
+</span><span class="n">password1</span> <span class="o">=</span> <span class="n">level0</span><span class="p">()</span>
+<span class="n">password2</span> <span class="o">=</span> <span class="n">level1</span><span class="p">(</span><span class="n">password1</span><span class="p">)</span>
+<span class="n">password3</span> <span class="o">=</span> <span class="n">level2</span><span class="p">(</span><span class="n">password2</span><span class="p">)</span>
+<span class="n">password4</span> <span class="o">=</span> <span class="n">level3</span><span class="p">(</span><span class="n">password3</span><span class="p">)</span>
+<span class="n">password5</span> <span class="o">=</span> <span class="n">level4</span><span class="p">(</span><span class="n">password4</span><span class="p">)</span>
+<span class="n">password6</span> <span class="o">=</span> <span class="n">level5</span><span class="p">(</span><span class="n">password5</span><span class="p">)</span>
+</code></pre></div></div>
+
+    </div>
+
+
+
+        <div class="spacer"></div>
+<div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4">
+    <div class="col-md-4 d-flex align-items-center">
+        <span class="text-muted">Website by JLN</span>
+    </div>
+    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+        <li class="ms-3"><a class="text-muted" href="https://github.com/jolana-veneny"><i class="fab fa-github mr-1"></i></a> </li>
+        <li class="ms-3"><a class="text-muted" href="https://www.linkedin.com/in/jolana-veneny/"><i class="fab fa-linkedin mr-1"></i></a> </li>
+        <li class="ms-3"><a class="text-muted" href="https://twitter.com/lanaveneny"><i class="fab fa-twitter"></i></a> </li>
+    </ul>
+    </footer>
+</div>
+    </body>
+
+</html>

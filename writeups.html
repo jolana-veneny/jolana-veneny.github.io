@@ -1,0 +1,7 @@
+---
+layout: default
+title: Write-Ups
+---
+{% assign filtered_posts = site.posts | where: 'tag', 'WriteUps' %}
+
+{% include card.html %}

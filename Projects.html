@@ -1,0 +1,7 @@
+---
+layout: default
+title: Projects
+---
+
+  {% assign filtered_posts = site.posts | where: 'tag', 'Projects' %}
+  {% include card.html %}

@@ -1,0 +1,17 @@
+---
+layout: default
+---
+
+    <div class="container post">
+        <div class="row justify-content-between post-header">
+            <div class="col-4">
+                <p class="category">{{ page.date | date_to_string }} - by {{ page.author }}</p>
+            </div>
+            <div class="col-2">
+                <p class="category">Category: {{ page.tag }}</p>
+            </div>
+        </div>
+        {{ content }}
+    </div>
+
+
