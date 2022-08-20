@@ -22,6 +22,7 @@ As you can see, the executable asks for a password and if you fail to provide th
 
 This still does not tell us anything about what the password might be so we now move on to Ghidra.
 After we open a new project and analyze the file, this is what we see:
+
 ![Keyg3nMe_Ghidra](https://user-images.githubusercontent.com/101567957/185752028-9d0b5f5e-133e-4af0-be91-9665bcc8789d.png)
 
 Straight away, let's jump into the `main` function.
