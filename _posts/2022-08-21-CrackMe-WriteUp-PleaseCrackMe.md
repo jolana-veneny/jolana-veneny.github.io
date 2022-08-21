@@ -11,6 +11,7 @@ This time I chose a CrackMe which, even though it is still fairly simple, requir
 Before diving into the actual analysis, let's have a look at how the executable behaves:
 
 <img src="https://user-images.githubusercontent.com/101567957/185801576-f57d1bd0-a3b9-418b-877b-edb5d6a05f1e.png" height="180">
+
 As we can see, the user is asked to enter a username, then to pick a number between 1 and 9, and to enter a password. As expected, typing random answers will get you the "Wrong answer" response.
 
 Now let's load the executable directly into Ghidra. When we look at the `main` function in the decompiler, we can see straight away that it contains some interesting code that has a bunch of if statements and directly deals with the password.
