@@ -4,7 +4,6 @@ tag: WriteUps
 author: JLN
 ---
 ## Overflow Exploit: Just Do It
-
 This slightly more complicated overflow challenge is available [here](https://github.com/hoppersroppers/nightmare/tree/master/modules/04-Overflows/04-bof_variable/tw17_justdoit) as part of the Nightmare RE course. I used Python and the pwntool module to write the exploit.
 
 For this challenge to work, you need to supply the flag.txt in the same directory as the binary.
