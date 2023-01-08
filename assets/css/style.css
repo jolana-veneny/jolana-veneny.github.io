@@ -116,3 +116,20 @@ nav {
     max-width: 400px;
     filter: brightness(150%);
 }
+
+.pagination > li > a
+{
+    background-color: #040e2a;
+    color: #6085A6;
+    border-color: #040e2a;
+    box-shadow: 12px 0 10px -4px rgba(0,0,0,0.8), -12px 0 8px -4px rgba(0,0,0,.4);
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover
+{
+    background-color: #040e2a;
+    border-color: #040e2a;
+    text-shadow: 0px 0px 1px #94CDFF;
+    box-shadow: 12px 0 10px -4px rgba(31, 73, 125, 0.8), -12px 0 8px -4px rgba(31, 73, 125, 0.8);
+}
