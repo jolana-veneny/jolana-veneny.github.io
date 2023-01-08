@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="row my-4"> 
+      {% if paginator.total_pages > 1 %}
+      <ul class="pagination main-pager justify-content-center">
+        {% if paginator.previous_page %}
+          <li class="page-item previous">
+          <a class="page-link" href="{{ paginator.previous_page_path | absolute_url }}">&laquo; Newer Posts</a>
+          </li>    
+        {% endif %}
+        {% if paginator.next_page %}
+          <li class="page-item next offset-sm-1">
+            <a class="page-link" href="{{ paginator.next_page_path | absolute_url }}">Older Posts &raquo;</a>
+          </li>
+        {% endif %}
+      </ul>
+    {% endif %}
+  </div>
+</div>
