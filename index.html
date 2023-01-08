@@ -3,5 +3,7 @@ layout: default
 title: Home
 ---
 
-{% assign filtered_posts = site.posts %}
+{% assign filtered_posts = paginator.posts %}
 {% include card.html %}
+
+{% include paginator.html %}
